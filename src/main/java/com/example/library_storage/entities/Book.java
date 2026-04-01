@@ -50,6 +50,22 @@ public class Book {
         return copies;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public void setCopies(int copies) {
+        this.copies = copies;
+    }
+
     public List<Loan> getLoans() {
         return loans;
     }

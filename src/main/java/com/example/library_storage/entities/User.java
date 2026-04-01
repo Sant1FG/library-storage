@@ -17,7 +17,7 @@ public class User {
     private String address;
     private String phoneNumber;
     @OneToMany(mappedBy = "user")
-    private List<Loan> loans = new ArrayList<>();;
+    private List<Loan> loans = new ArrayList<>();
 
     public User(String dni, String name, String surname, String address, String phoneNumber) {
         this.dni = dni;
@@ -57,5 +57,25 @@ public class User {
 
     public List<Loan> getLoans() {
         return loans;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
