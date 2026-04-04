@@ -2,6 +2,7 @@ package com.example.library_storage.entities;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -9,11 +10,12 @@ import java.time.LocalDate;
 public class Loan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loan_id;
     private LocalDate creationDate;
+    @NotNull
     private LocalDate endDate;
-    private boolean returned;
+    private Boolean returned;
     @ManyToOne
     @JoinColumn(name = "ISBN")
     private Book book;
@@ -60,12 +62,6 @@ public class Loan {
 
     public void setReturned(boolean returned) {
         this.returned = returned;
-    }
-
-    public LoanStatus getStatus() {
-        if(returned) return LoanStatus.COMPLETED;
-        if (LocalDate.now().isAfter(endDate)) return LoanStatus.DELAYED;
-        return LoanStatus.ACTIVE;
     }
 
 }

@@ -6,6 +6,8 @@ import com.example.library_storage.exceptions.NotFoundException;
 import com.example.library_storage.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -23,11 +25,9 @@ public class UserService {
         return user;
     }
 
-    public User deleteUser(Long userId) throws NotFoundException {
+    public void deleteUser(Long userId) throws NotFoundException {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
         userRepository.delete(user);
-
-        return user;
     }
 
     public User editUser(Long userId, User updatedUser) throws NotFoundException {
@@ -41,4 +41,13 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
+
+    public Iterable<User> getUsers(){
+        return userRepository.findAll();
+    }
+
+    public User getUser(Long userId) throws NotFoundException {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
 }

@@ -1,10 +1,12 @@
 package com.example.library_storage.service;
 
-import com.example.library_storage.entities.Loan;
+import com.example.library_storage.entities.*;
 import com.example.library_storage.exceptions.AlreadyExistsException;
 import com.example.library_storage.exceptions.NotAvailableException;
 import com.example.library_storage.exceptions.NotFoundException;
+import com.example.library_storage.repositories.BookRepository;
 import com.example.library_storage.repositories.LoanRepository;
+import com.example.library_storage.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,49 +15,65 @@ import java.util.List;
 public class LoanService {
 
     private final LoanRepository loanRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
-    public LoanService(LoanRepository loanRepository) {
+    public LoanService(LoanRepository loanRepository, BookRepository bookRepository, UserRepository userRepository) {
         this.loanRepository = loanRepository;
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
-    public Loan saveLoan(Loan loan) throws NotAvailableException, AlreadyExistsException {
-        List<Loan> activeLoans = loanRepository.findByBook(loan.getBook());
+    public Loan saveLoan(LoanRequest loanRequest) throws NotAvailableException, AlreadyExistsException, NotFoundException {
+        Book requestedBook = bookRepository.findByISBN(loanRequest.getISBN());
+        if(requestedBook == null) throw new NotFoundException("Book not found");
+        List<Loan> activeLoans = loanRepository.findByBook(requestedBook);
+        User requestedUser = userRepository.findByDni(loanRequest.getDni());
+
         int loanedCopies = 0;
 
         for (Loan current : activeLoans) {
-            if (current.getUser().equals(loan.getUser()) && !current.isReturned()) {
+            if (current.getUser().equals(requestedUser) && !current.isReturned()) {
                 throw new AlreadyExistsException("Book already loaned to user");
             }
             if (!current.isReturned()) loanedCopies++;
         }
 
-        if (loanedCopies >= loan.getBook().getCopies()) {
+        if (loanedCopies >= requestedBook.getCopies()) {
             throw new NotAvailableException("Book has no available copies");
         }
 
-        this.loanRepository.save(loan);
-        return loan;
+        Loan newLoan = new Loan(loanRequest.getEndDate(),requestedBook,requestedUser);
+        newLoan.setReturned(false);
+        this.loanRepository.save(newLoan);
+        return newLoan;
     }
 
-    public Loan deleteLoan(Long loanId) throws NotFoundException {
+    public void deleteLoan(Long loanId) throws NotFoundException {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Loan not found"));
         loanRepository.delete(loan);
-
-        return loan;
     }
 
     public Loan loanReturned(Long loanId) throws NotFoundException {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Loan not found"));
         loan.setReturned(true);
-        loanRepository.save(loan);
-        return loan;
+        return loanRepository.save(loan);
     }
 
-    public Loan modifyLoan(Long loanId, Loan updatedLoan) throws NotFoundException {
+    public Loan updateLoan(Long loanId, LoanUpdateRequest updatedLoan) throws NotFoundException {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Loan not found"));
-        loan.setEndDate(updatedLoan.getEndDate());
-        loanRepository.save(loan);
-        return loan;
+        if(updatedLoan.getEndDate() != null){
+            loan.setEndDate(updatedLoan.getEndDate());
+        }
+        return loanRepository.save(loan);
+    }
+
+    public Iterable<Loan> getLoans(){
+        return loanRepository.findAll();
+    }
+
+    public Loan getLoan(Long loanId) throws NotFoundException {
+        return loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Loan not found"));
     }
 
 }

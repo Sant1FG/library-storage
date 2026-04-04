@@ -1,6 +1,7 @@
 package com.example.library_storage.service;
 
 import com.example.library_storage.entities.Book;
+import com.example.library_storage.entities.User;
 import com.example.library_storage.exceptions.AlreadyExistsException;
 import com.example.library_storage.exceptions.NotFoundException;
 import com.example.library_storage.repositories.BookRepository;
@@ -24,11 +25,9 @@ public class BookService {
         return book;
     }
 
-    public Book deleteBook(String ISBN) throws NotFoundException {
+    public void deleteBook(String ISBN) throws NotFoundException {
         Book book = bookRepository.findById(ISBN).orElseThrow(() -> new NotFoundException("Book not found"));
         bookRepository.delete(book);
-
-        return book;
     }
 
     public Book editBook(String ISBN, Book updatedBook) throws NotFoundException {
@@ -40,6 +39,14 @@ public class BookService {
 
         bookRepository.save(book);
         return book;
+    }
+
+    public Iterable<Book> getBooks(){
+        return bookRepository.findAll();
+    }
+
+    public Book getBook(String ISBN) throws NotFoundException {
+        return bookRepository.findById(ISBN).orElseThrow(() -> new NotFoundException("Book not found"));
     }
 }
 

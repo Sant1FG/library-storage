@@ -1,22 +1,28 @@
 package com.example.library_storage.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
+    @NotBlank(message = "DNI is required")
     private String dni;
+    @NotBlank(message = "Name is required")
     private String name;
     private String surname;
     private String address;
     private String phoneNumber;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Loan> loans = new ArrayList<>();
 
     public User(String dni, String name, String surname, String address, String phoneNumber) {
