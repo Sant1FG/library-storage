@@ -1,0 +1,31 @@
+services:
+  java_app:
+    container_name: library-storage
+    image: library-storage:1.0
+    build: .
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      library_db:
+          condition: service_healthy
+
+  library_db:
+    container_name: library-db
+    image: mysql
+    ports:
+      - 3307:3306
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: library_db
+
+volumes:
+  db-data:
