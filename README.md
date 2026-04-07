@@ -30,7 +30,7 @@ cd library-storage
 docker compose up --build
 ```
 
-La API estará disponible en `http://localhost:8080`.
+La API estará disponible en `http://localhost:8080`. Se recomienda utilizar herramientas de testeo de APIs como Postman para probarla.
 
 > La base de datos se inicializa automáticamente al arrancar el contenedor.
 
