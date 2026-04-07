@@ -3,7 +3,7 @@
 REST API para la gestión de una biblioteca local. 
 
 ## 📖 Descripción
-REST API que permite administrar el catálogo de libros, los usuarios con carnet bibliotecario y los préstamos activos. Desarrollado con Java 17 y el framework Spring Boot**, almacenamiento de datos usando MySQL y despliegue mediante Docker.
+REST API que permite administrar el catálogo de libros, los usuarios con carnet bibliotecario y los préstamos activos. Desarrollado con Java 17 y el framework Spring Boot, almacenamiento de datos usando MySQL y despliegue mediante Docker.
 
 ## 🛠️ Tecnologías
 
