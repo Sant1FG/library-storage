@@ -1,11 +1,11 @@
-# 📚 Library Storage API
+#  Library Storage API
 
 REST API para la gestión de una biblioteca local. 
 
-## 📖 Descripción
+##  Descripción
 REST API que permite administrar el catálogo de libros, los usuarios con carnet bibliotecario y los préstamos activos. Desarrollado con Java 17 y el framework Spring Boot, almacenamiento de datos usando MySQL y despliegue mediante Docker.
 
-## 🛠️ Tecnologías
+##  Tecnologías
 
 - Java 17
 - Spring Boot 3
@@ -14,7 +14,7 @@ REST API que permite administrar el catálogo de libros, los usuarios con carnet
 - Docker & Docker Compose
 - Maven
 
-## 📌 Manual de uso
+##  Manual de uso
 
 ### Requisitos
 - Docker y Docker Compose instalados
@@ -36,7 +36,7 @@ La API estará disponible en `http://localhost:8080`. Se recomienda utilizar her
 
 ---
 
-## 📖 Endpoints
+##  Endpoints
 
 ### Books
 
@@ -102,7 +102,7 @@ La API estará disponible en `http://localhost:8080`. Se recomienda utilizar her
 | `endDate` | Date | ✅ | `AAAA-MM-DD` |
 
 
-## 📋 Lógica de negocio destacada
+##  Lógica de negocio destacada
 
 - Un usuario no puede tener dos préstamos activos del mismo libro simultáneamente.
 - No se puede crear un préstamo si no quedan ejemplares disponibles.
